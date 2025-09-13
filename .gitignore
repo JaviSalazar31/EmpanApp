@@ -1,0 +1,29 @@
+# Dependencias
+node_modules/
+
+# Variables de entorno
+.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
+
+# Coverage (tests)
+coverage/
+
+# Build outputs (si algún día agregás TS o build tools)
+dist/
+build/
+
+# Lockfiles alternativos (ignorar si no los usás)
+yarn.lock
+pnpm-lock.yaml

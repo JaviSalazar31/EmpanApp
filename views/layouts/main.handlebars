@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EmpanApp</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <style>
+      nav { margin-bottom: 1rem; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 1rem; }
+      .pagination a[aria-current="page"] { font-weight: 700; text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <nav class="container-fluid">
+      <ul><li><strong>EmpanApp</strong></li></ul>
+      <ul>
+        <li><a href="/products">Productos</a></li>
+        <li><a href="#" onclick="openCart()">Mi Carrito</a></li>
+      </ul>
+    </nav>
+
+    <main class="container">
+      {{{body}}}
+    </main>
+
+    <script>
+      function openCart() {
+        const cid = localStorage.getItem('cartId');
+        if (!cid) { alert('Aún no creaste carrito. Agregá un producto primero.'); return; }
+        location.href = `/carts/${cid}`;
+      }
+    </script>
+  </body>
+</html>

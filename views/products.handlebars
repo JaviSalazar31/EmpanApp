@@ -1,0 +1,57 @@
+<h1>Productos</h1>
+
+<form method="get" action="/products">
+  <div class="grid">
+    <input type="text" name="query" placeholder="Buscar: category:Saladas | available:true | stock:true" value="{{query}}"/>
+    <select name="sort">
+      <option value="">Sin orden</option>
+      <option value="asc"  {{#if (eq sort 'asc')}}selected{{/if}}>Precio asc</option>
+      <option value="desc" {{#if (eq sort 'desc')}}selected{{/if}}>Precio desc</option>
+    </select>
+    <input type="number" name="limit" placeholder="Límite" min="1" value="{{limit}}"/>
+    <button type="submit">Aplicar</button>
+  </div>
+</form>
+
+{{#if payload.length}}
+  <div class="grid">
+    {{#each payload}}
+      <article>
+        <header><strong>{{this.title}}</strong></header>
+        <p>{{this.description}}</p>
+        <p><small>Categoría: {{this.category}} | Stock: {{this.stock}} | $ {{this.price}}</small></p>
+        <footer>
+          <a role="button" href="/products/{{this._id}}">Ver detalle</a>
+          <button data-pid="{{this._id}}" class="add-to-cart">Agregar al carrito</button>
+        </footer>
+      </article>
+    {{/each}}
+  </div>
+
+  <nav class="pagination">
+    {{#if hasPrevPage}}<a href="{{prevLink}}">« Anterior</a>{{/if}}
+    <a aria-current="page">Página {{page}} de {{totalPages}}</a>
+    {{#if hasNextPage}}<a href="{{nextLink}}">Siguiente »</a>{{/if}}
+  </nav>
+{{else}}
+  <p>No hay productos para los filtros seleccionados.</p>
+{{/if}}
+
+<script>
+  document.addEventListener('click', async (e) => {
+    if (e.target.classList.contains('add-to-cart')) {
+      const pid = e.target.getAttribute('data-pid');
+      let cid = localStorage.getItem('cartId');
+      try {
+        if (!cid) {
+          const crt = await fetch('/api/carts', { method: 'POST' }).then(r=>r.json());
+          cid = crt.payload._id;
+          localStorage.setItem('cartId', cid);
+        }
+        const res = await fetch(`/api/carts/${cid}/products/${pid}`, { method: 'POST' });
+        if (!res.ok) throw new Error('No se pudo agregar');
+        alert('Producto agregado al carrito');
+      } catch (err) { alert(err.message); }
+    }
+  });
+</script>

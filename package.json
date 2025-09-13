@@ -1,0 +1,21 @@
+{
+  "name": "empanapp",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js",
+    "check:db": "node scripts/check-db.js",
+    "seed": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-handlebars": "^7.1.3",
+    "mongoose": "^8.4.4",
+    "mongoose-paginate-v2": "^1.7.31"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

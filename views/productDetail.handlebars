@@ -1,0 +1,22 @@
+<h1>{{product.title}}</h1>
+<p>{{product.description}}</p>
+<p><strong>$ {{product.price}}</strong></p>
+<p>Categoría: {{product.category}} | Stock: {{product.stock}} | Disponible: {{product.status}}</p>
+<button id="add">Agregar al carrito</button>
+
+<script>
+  document.getElementById('add').addEventListener('click', async () => {
+    const pid = '{{product._id}}';
+    let cid = localStorage.getItem('cartId');
+    try {
+      if (!cid) {
+        const crt = await fetch('/api/carts', { method: 'POST' }).then(r=>r.json());
+        cid = crt.payload._id;
+        localStorage.setItem('cartId', cid);
+      }
+      const res = await fetch(`/api/carts/${cid}/products/${pid}`, { method: 'POST' });
+      if (!res.ok) throw new Error('No se pudo agregar');
+      location.href = `/carts/${cid}`;
+    } catch (e) { alert(e.message); }
+  });
+</script>

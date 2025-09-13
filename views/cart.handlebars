@@ -1,0 +1,62 @@
+<h1>Mi Carrito</h1>
+
+{{#if cart}}
+  {{#if cart.products.length}}
+    <table>
+      <thead>
+        <tr><th>Producto</th><th>Precio</th><th>Cant.</th><th>Subtotal</th><th></th></tr>
+      </thead>
+      <tbody>
+        {{#each cart.products}}
+          <tr>
+            <td>{{this.product.title}}</td>
+            <td>$ {{this.product.price}}</td>
+            <td>
+              <input type="number" min="1" value="{{this.quantity}}" data-pid="{{this.product._id}}" class="qty" style="max-width:80px"/>
+            </td>
+            <td>$ {{multiply this.product.price this.quantity}}</td>
+            <td><button data-pid="{{this.product._id}}" class="del">Eliminar</button></td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <button id="clear">Vaciar carrito</button>
+  {{else}}
+    <p>Tu carrito está vacío.</p>
+  {{/if}}
+{{else}}
+  <p>Carrito no encontrado.</p>
+{{/if}}
+
+<script>
+  document.addEventListener('change', async (e) => {
+    if (e.target.classList.contains('qty')) {
+      const pid = e.target.getAttribute('data-pid');
+      const qty = parseInt(e.target.value, 10);
+      const cid = '{{cart._id}}';
+      const res = await fetch(`/api/carts/${cid}/products/${pid}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ quantity: qty })
+      });
+      if (!res.ok) alert('No se pudo actualizar la cantidad');
+      else location.reload();
+    }
+  });
+
+  document.addEventListener('click', async (e) => {
+    if (e.target.id === 'clear') {
+      const cid = '{{cart._id}}';
+      const res = await fetch(`/api/carts/${cid}`, { method: 'DELETE' });
+      if (!res.ok) return alert('No se pudo vaciar');
+      location.reload();
+    }
+    if (e.target.classList.contains('del')) {
+      const cid = '{{cart._id}}';
+      const pid = e.target.getAttribute('data-pid');
+      const res = await fetch(`/api/carts/${cid}/products/${pid}`, { method: 'DELETE' });
+      if (!res.ok) return alert('No se pudo eliminar');
+      location.reload();
+    }
+  });
+</script>
