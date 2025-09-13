@@ -10,20 +10,20 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Sistema operativo
+# SO
 .DS_Store
 Thumbs.db
 
 # VSCode
 .vscode/
 
-# Coverage (tests)
+# Coverage
 coverage/
 
-# Build outputs (si algún día agregás TS o build tools)
+# Build outputs (si algún día agregás bundlers)
 dist/
 build/
 
-# Lockfiles alternativos (ignorar si no los usás)
+# Lockfiles alternativos (si no los usás)
 yarn.lock
 pnpm-lock.yaml
